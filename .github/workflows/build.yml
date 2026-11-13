@@ -1,0 +1,35 @@
+name: Build Tweak
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Theos
+        run: |
+          export THEOS=$HOME/theos
+          git clone --recursive https://github.com/theos/theos.git $THEOS
+          curl -L https://github.com/theos/sdks/archive/master.zip -o /tmp/sdks.zip
+          unzip -q /tmp/sdks.zip -d $THEOS/sdks
+          mv $THEOS/sdks/sdks-master/iPhoneOS16.5.sdk $THEOS/sdks/
+          brew install ldid
+
+      - name: Build
+        run: |
+          export THEOS=$HOME/theos
+          export PATH=$THEOS/bin:$PATH
+          make package FINALPACKAGE=1
+
+      - name: Extract Dylib
+        run: |
+          mkdir out
+          dpkg-deb -x packages/*.deb out/
+          find out -name "*.dylib" -exec cp {} . \;
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FFMaxHack-dylib
+          path: "*.dylib"
