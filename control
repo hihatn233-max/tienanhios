@@ -1,0 +1,9 @@
+Package: com.olivia.ffmaxhack
+Name: FFMaxHack
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: FF MAX iOS Mod Menu
+Maintainer: olivia
+Author: olivia
+Section: Tweaks
+Depends: mobilesubstrate
