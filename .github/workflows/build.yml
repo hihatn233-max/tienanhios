@@ -14,7 +14,7 @@ jobs:
           curl -L https://github.com/theos/sdks/archive/master.zip -o /tmp/sdks.zip
           unzip -q /tmp/sdks.zip -d $THEOS/sdks
           mv $THEOS/sdks/sdks-master/iPhoneOS16.5.sdk $THEOS/sdks/
-          brew install ldid
+          brew install ldid dpkg
 
       - name: Build
         run: |
